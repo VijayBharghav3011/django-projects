@@ -1,0 +1,47 @@
+<!doctype html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Task List</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+<div class="container">
+    <div class="wrapper">
+        <div class="task-container">
+            <div class="form-wrapper">
+                <form action="" id="form">
+                    <div class="form_content">
+                        <div class="form_input">
+                            <input type="text" id="title" class="form-control" name="title" placeholder="Enter task to add">
+                        </div>
+                        <div class="submit_block">
+                            <button type="submit" value="" id="btn-submit" class="btn">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="list-block">
+                <div class="heading pending_block">
+                    <h3 class="title_heading">Pending Task</h3>
+                    <div class="item_list_pending">
+
+                    </div>
+                </div>
+                <div class="heading completed_block">
+                    <h3 class="title_heading">Completed Task</h3>
+                    <div class="item_list_completed">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>
