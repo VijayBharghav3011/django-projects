@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% block title %}Schedule Doctor slots | Digital Front Door{% endblock %}
+
+{% block content %}
+    <div class="schedule_block">
+    <h2 class="schedule_heading">Schedule Time Slot Dr. {{user.first_name}} {{user.last_name}}</h2>
+
+        <form action="" method="post">
+            {% csrf_token %}
+            <div class="form_input">
+                <div class="form-input">
+                    <label for="dept">Select Department</label>
+                    <select name="deptId" id="dept">
+                           <option>Select Department</option>
+                        {% for i in department %}
+                            <option value="{{i.pk}}">{{i.department_name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                 <div class="form-input">
+                    <label for="date">Select Available Dates</label>
+                    <input type="date" name="date" id="date">
+                </div>
+                 <div class="form-input">
+                    <label for="time">From</label>
+                     <input type="time" class="time-pickable" id="timeInput" name="from_time" placeholder="select from time" >
+                </div>
+                <div class="form-input">
+                    <label for="time">TO</label>
+                    <input type="time" class="time-pickable" id="timeInput1" name="to_time" placeholder="select to time">
+                </div>
+                <div class="form-input">
+                    <label for="city">Enter city</label>
+                    <input type="text" class="city" name="location" placeholder="Enter city">
+                </div>
+
+            </div>
+            <div class="btn_block btn_department">
+                <button type="submit" class="btn btn_cancel"><a href="{% url 'list' user.id %}">Cancel</a></button>
+                <button type="submit" class="btn btn_submit">Create Schedule</button>
+            </div>
+        </form>
+    </div>
+
+
+<script>
+   function changeDate() {
+      var selectedDate = new Date(document.getElementById("date_VALUE").value);
+      var today = new Date();
+      var timeInput = document.getElementById("timeInput");
+      var timeInput1 = document.getElementById("timeInput1");
+
+      // Clear previously selected times
+      timeInput.value = "";
+      timeInput1.value = "";
+
+      // Disable past dates
+      if (selectedDate < today) {
+         alert("You cannot select past dates.");
+         document.getElementById("date").value = "";
+         return;
+      }
+
+      // Set default time for today's date
+      if (selectedDate.toDateString() === today.toDateString()) {
+         var now = new Date();
+         var hours = now.getHours();
+         var minutes = now.getMinutes();
+         var formattedTime = ('0' + hours).slice(-2) + ':' + ('0' + minutes).slice(-2);
+         timeInput.value = formattedTime;
+      }
+   }
+</script>
+
+ {% endblock %}

@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+{% block title %}Add Patient {% endblock %}
+
+{% block content %}
+<!--    <div class="col-md-2_content">-->
+        <div class="primary_heading">
+            <h4 class="heading--text">
+                Add Patient
+            </h4>
+        </div>
+        <div class="form_data">
+            <form action="" method="post">
+                 {% csrf_token %}
+                <h2>Enter the details to book Patient</h2>
+                <div class="form_input">
+                     <div class="form-input">
+                        <label for="">Full Name</label>
+                        <input type="text" placeholder="Enter Full Name" name="full_name" required>
+                    </div>
+
+                    <div class="form-input">
+                        <label for="">Phone Number</label>
+                        <input type="text" placeholder="Enter Phone Number" name="phone_number" required>
+                    </div>
+                    <div class="form-input">
+                        <label for="">Email</label>
+                        <input type="email" placeholder="Enter Email" name="email" required>
+                    </div>
+                    <div class="form-input">
+                        <label for="">Date Of Birth</label>
+                        <input type="Date" id="date" name="date_of_birth" required>
+                    </div>
+
+                    <div class="form-input">
+                        <label for="">Doctor Name</label>
+                        <select name="user_id" id="">
+                            <option value="">Select</option>
+                            {% for i in doctor %}
+                                <option value="{{i.id}}">Dr {{i.first_name}} {{i.last_name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-input">
+                        <label for="">Appointment Date</label>
+                        <input type="Date" value="" name="date" class="time" required>
+                    </div>
+                    <div class="form-input">
+                        <label for="">Appointment Time</label>
+                        <input type="time" value="" name="appointed_date" class="doctor_name" required>
+                    </div>
+                    <div class="form-input">
+                        <label for="">Location</label>
+                        <input type="text" value="" name="location" class="location" hidden="hidden">
+                    </div>
+                    <div class="form-input">
+                        <label for="">Specialization</label>
+                         <select name="specialization" id="">
+                            <option value="">Select</option>
+                            {% for i in dept %}
+                                <option value="Dr. {{i.department_name}}">{{i.department_name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+
+                    <div class="form-input">
+                        <label for="">Gender</label>
+                       <select name="gender" id="gender">
+                            <option value="">Select</option>
+                            <option value="Male">Male</option>
+                            <option value="FeMale">Female</option>
+                            <option value="No">Not to mention</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="btn_book">
+                    <button class="button_appointment" type="submit">Book Appointment</button>
+                </div>
+            </form>
+        </div>
+
+<script>
+    // Ensure date input minimum is set to current date
+ function changeDate() {
+        var selectedDate = new Date(document.getElementById("date").value);
+        var today = new Date();
+        var appointedDateField = document.getElementById("appointed_date");
+
+        // Clear previously selected time
+        appointedDateField.value = "";
+
+        // Disable past dates
+        if (selectedDate < today) {
+            alert("You cannot select past dates.");
+            document.getElementById("date").value = "";
+            return;
+        }
+
+        // Set default time for today's date
+        if (selectedDate.toDateString() === today.toDateString()) {
+            var now = new Date();
+            var hours = now.getHours();
+            var minutes = now.getMinutes();
+            var formattedTime = ('0' + hours).slice(-2) + ':' + ('0' + minutes).slice(-2);
+            appointedDateField.value = formattedTime;
+        }
+    }
+
+    function validateForm() {
+        var check_dob = document.getElementById('dob');
+        var check_phone = document.getElementById('phonenumber');
+
+        if (!validateDate(check_dob)) {
+            return false;
+        }
+
+        if (!validatePhoneNumber(check_phone)){
+            return false;
+        }
+
+          return true;
+    }
+
+    function validateDate(dateInput) {
+        var inputDate = new Date(dateInput.value);
+        var currentDate = new Date();
+
+        if (inputDate >= currentDate) {
+            alert('Date must be in the past.');
+            dateInput.value = '';
+            return false;
+        }
+
+        return true;
+    }
+
+    function validatePhoneNumber(phoneInput) {
+        var phoneNumber = phoneInput.value;
+
+        var phonePattern =/^\+?[1-9]\d{11,13}$/;
+
+        if (!phonePattern.test(phoneNumber)) {
+            alert('Invalid phone number format. Please enter a +9191******* digit number.');
+            phoneInput.value = '';
+            return false;
+        }
+
+        return true;
+    }
+
+</script>
+{% endblock %}
