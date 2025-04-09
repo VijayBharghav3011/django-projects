@@ -1,0 +1,26 @@
+{% extends 'authenticate/login/base.html' %}
+
+{% block title %} Password Reset {% endblock %}
+
+{% block heading %}
+    <p class ="primary_text">Welcome User</p>
+    <span class="secondary_text">Enter Your Email Id to Reset Your Password</span>
+{% endblock %}
+
+{% block form_content %}
+<div class="form_input--block">
+    <div class="input_block">
+        {{ form.email }}
+    </div>
+</div>
+
+<div class="form_btn--block form_reset_btn--block">
+     <div class="btn_reset">
+        <button class="resetBtn" type="submit">Reset Password</button>
+    </div>
+    <div class="login_link">
+        <span>Already have an account <a class =""   href="{% url 'login' %}"> Login?</a></span>
+    </div>
+
+</div>
+{% endblock %}

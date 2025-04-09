@@ -1,0 +1,35 @@
+{% extends 'authenticate/login/base.html' %}
+
+{% block title %} Login {% endblock %}
+
+
+{% block heading %}
+    <p class ="primary_text">Welcome User,</p>
+    <span class="secondary_text">Enter credential to login</span>
+{% endblock %}
+
+{% block form_content %}
+    <div class="form_input--block">
+        <div class="input_block">
+            {{ form.username_or_email }}
+        </div>
+        <div class="password_block input_block">
+            {{ form.password }}
+            <i class="fas fa-eye eye-icon" id="togglePassword"></i>
+        </div>
+    </div>
+
+    <div class="form_btn--block">
+        <div class="check_box">
+            <div class="forgot_link">
+                <a class ="" href="{% url 'reset_password' %}">Forgot Password?</a>
+            </div>
+        </div>
+        <div class="btn_submit">
+            <button class="loginBtn" type="submit">Login</button>
+        </div>
+        <div class="signup_btn">
+            Don't have an account? <a href="{% url 'signup' %}">Signup</a>
+        </div>
+    </div>
+{% endblock %}

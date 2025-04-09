@@ -1,0 +1,35 @@
+{% extends 'home/base.html' %}
+
+
+{% block content %}
+    <header class="header">
+        <nav class="navbar">
+            <div class="logo">
+                <img src="" alt="Logo">
+            </div>
+            <div class="input">
+                <input type="search" name="" id="">
+            </div>
+            <ul class="navList">
+
+                <li class="navItems">
+                    <a href="" class="navLinks">Notification</a>
+                </li>
+                <li class="navItems">
+                   <a href="{% url 'ask_question' %}" class="btn btn-primary">Ask a Question</a>
+                </li>
+                <li class="navItems">
+                    <p>Welcome, {{username}}</p>
+                </li>
+                <li class="navItems">
+                    <a href="{% url 'logout' %}">Logout</a>
+                </li>
+
+            </ul>
+        </nav>
+    </header>
+
+
+{% endblock %}
+
+

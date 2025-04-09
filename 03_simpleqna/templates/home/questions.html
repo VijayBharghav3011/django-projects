@@ -1,0 +1,57 @@
+{% extends 'home/base.html' %}
+{% block title %}Question List{% endblock %}
+
+{% block content %}
+<div class="question_block">
+    {% for question in questions %}
+        <div class="question">
+            <div>
+                <a href="{% url 'question_detail' question.pk %}">
+                    <h4>{{ question.title }}</h4>
+                    <p class="posted">Posted by {{ question.user }} on {{ question.created_at|date:"M d, Y H:i" }}</p>
+
+
+            {% with question.answers.first as any_answer %}
+                {% if any_answer %}
+                    <div class="any-answer">
+<!--                        <strong>Answer:</strong>-->
+                        <p> {{ any_answer.content|truncatechars:100 }}</p>
+                        <p><strong>Author: </strong>{{ any_answer.user }}, {{ any_answer.created_at|timesince }} ago</p>
+                    </div>
+                {% else %}
+                    <p>No answers yet.</p>
+                {% endif %}
+            {% endwith %}
+
+
+                     </a>
+            </div>
+        </div>
+    {% empty %}
+        <p>No questions have been posted yet.</p>
+    {% endfor %}
+</div>
+
+<script>
+document.querySelectorAll('.question-vote-form').forEach(form => {
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const questionId = this.dataset.questionId;
+        const voteBtn = this.querySelector('.vote-btn');
+        const voteCount = this.querySelector('.question-vote-count');
+
+        fetch(`/vote-question/${questionId}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': this.querySelector('[name=csrfmiddlewaretoken]').value
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            voteCount.textContent = data.total_votes;
+            voteBtn.firstChild.textContent = data.voted ? 'Unlike ' : 'Like ';
+        });
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends 'authenticate/login/base.html' %}
+
+{% block title %} Signup {% endblock %}
+
+
+{% block heading %}
+    <p class ="primary_text">Welcome User,</p>
+    <span class="secondary_text">Enter credential to login</span>
+{% endblock %}
+
+{% block form_content %}
+    <div class="form_input--block">
+        <div class="input_block">
+            {{ form.username }}
+        </div>
+        <div class="input_block">
+            {{ form.first_name }}
+        </div>
+        <div class="input_block">
+            {{ form.last_name }}
+        </div>
+        <div class="input_block">
+            {{ form.email }}
+        </div>
+        <div class="input_block">
+            {{ form.password1 }}
+        </div>
+        <div class="password_block input_block">
+            {{ form.password2 }}
+        </div>
+    </div>
+
+    <div class="form_btn--block signup_block">
+        <div class="btn_submit">
+            <button class="loginBtn" type="submit">SignUp</button>
+        </div>
+        <div class="signup_btn">
+            Already have an account? <a href="{% url 'login' %}">Login</a>
+        </div>
+    </div>
+{% endblock %}

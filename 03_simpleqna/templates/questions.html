@@ -1,0 +1,63 @@
+{% extends 'home/base.html' %}
+{% include 'home/home.html' %}
+
+{% block content %}
+<h2>All Questions</h2>
+<p>{{ username }}</p>
+<a href="{% url 'ask_question' %}" class="btn btn-primary">Ask a Question</a>
+<hr>
+
+{% for question in questions %}
+<div class="question">
+    <h4><a href="{% url 'question_details' question.pk %}">{{ question.title }}</a></h4>
+    <p>Posted by {{ question.user }} on {{ question.created_at|date:"M d, Y H:i" }}</p>
+    <button class="btn btn-primary answer-btn" data-question-id="{{ question.pk }}" data-question-title="{{ question.title }}">Answer</button>
+</div>
+<hr>
+{% empty %}
+<p>No questions have been posted yet.</p>
+{% endfor %}
+{% endblock %}
+
+{% if user.is_authenticated %}
+<div class="modal fade" id="answerModal" tabindex="-1" aria-labelledby="answerModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="answerModalLabel">Answer Question</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" id="answer-form">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-primary">Submit Answer</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% else %}
+<p><a href="{% url 'login' %}">Login</a> to post an answer.</p>
+{% endif %}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const answerButtons = document.querySelectorAll('.answer-btn');
+        const modal = new bootstrap.Modal(document.getElementById('answerModal'));
+        const modalTitle = document.getElementById('answerModalLabel');
+        const form = document.getElementById('answer-form');
+
+        answerButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const questionId = button.getAttribute('data-question-id');
+                const questionTitle = button.getAttribute('data-question-title');
+
+                modalTitle.textContent = `Answer to: ${questionTitle}`;
+                form.action = "{% url 'submit_answer' 0 %}".replace('0', questionId);
+
+                modal.show();
+            });
+        });
+    });
+</script>

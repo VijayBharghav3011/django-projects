@@ -1,0 +1,89 @@
+{% extends 'home/base.html' %}
+{% block title %}Question Info{% endblock %}
+
+{% block content %}
+<div class="answered_block">
+    <div class="question_b">
+        <h2>{{ question.title }}</h2>
+        <p>{{ question.description }}</p>
+    </div>
+
+    <div class="answered_content">
+        {% for answer in question.answers.all %}
+            <div class="answer-box">
+                <p>{{ answer.content }}</p>
+                <p><strong>— {{ answer.user }}, {{ answer.created_at|timesince }} ago</strong></p>
+
+                {% if request.user.is_authenticated %}
+                    <form class="vote-form" data-answer-id="{{ answer.id }}">
+                        {% csrf_token %}
+                        <button type="submit" class="vote-btn">
+                            <span class="vote-text">Like</span>
+                            (<span class="vote-count">{{ answer.votes.count }}</span>)
+                        </button>
+                    </form>
+                {% else %}
+                    <p><a href="{% url 'login' %}">Login</a> to vote</p>
+                {% endif %}
+
+            </div>
+        {% empty %}
+            <p>No answers yet.</p>
+        {% endfor %}
+    </div>
+
+    {% if user.is_authenticated and user != question.user %}
+        <button onclick="document.getElementById('answerModal').style.display='flex'">Answer</button>
+
+        <div class="modal-bg" id="answerModal" style="display:none;">
+            <div class="modal-content ask-question-container">
+                <div class="flex_modal">
+                    <h3>Answer</h3>
+                    <span class="close-btn" onclick="document.getElementById('answerModal').style.display='none'">×</span>
+                </div>
+                <form method="post" action="">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="submit-btn">Submit</button>
+                </form>
+            </div>
+        </div>
+    {% else %}
+        <p><a href="{% url 'login' %}">Login</a> to answer</p>
+    {% endif %}
+</div>
+<script>
+document.querySelectorAll('.vote-form').forEach(form => {
+    form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const answerId = this.dataset.answerId;
+        const voteBtn = this.querySelector('.vote-btn');
+        const voteCount = this.querySelector('.vote-count');
+        const voteText = this.querySelector('.vote-text');
+        const csrfToken = this.querySelector('[name=csrfmiddlewaretoken]').value;
+
+        try {
+            const response = await fetch(`/vote/${answerId}/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': csrfToken,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const data = await response.json();
+            voteCount.textContent = data.total_votes;
+            voteText.textContent = data.voted ? 'Unlike' : 'Like';
+        } catch (error) {
+            console.error('Error during voting:', error);
+        }
+    });
+});
+</script>
+
+{% endblock %}

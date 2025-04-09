@@ -1,0 +1,53 @@
+<!doctype html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>QNA | {% block title %} {% endblock %}}</title>
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+</head>
+<body>
+    <div class="container">
+        <div class="wrapper">
+            <div class="content">
+                <header class="header">
+                    <nav class="navbar">
+                        <div class="logo">
+                            <img src="" alt="Logo">
+                        </div>
+
+                        <ul class="navList">
+
+                            <li class="navItems">
+                               <a href="{% url 'ask_question' %}" class="btn btn-primary">Ask a Question</a>
+                            </li>
+                            {% if username %}
+                                <li class="navItems">
+                                    <p>Welcome {{ username }}</p>
+                                </li>
+                            {% else %}
+                                <li class="navItems" style="display:none">
+                                    <p>Welcome {{ username }}</p>
+                                </li>
+                            {% endif %}
+                            <li class="navItems">
+                                <a href="{% url 'logout' %}">logout</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </header>
+
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>
