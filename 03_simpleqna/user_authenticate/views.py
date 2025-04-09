@@ -63,7 +63,6 @@ def send_password_reset(subject, to, context):
     email.send()
 
 
-# Password Update
 class ForgotPassword(FormView):
     form_class = ResetPasswordForm
     template_name = 'authenticate/login/reset.html'
