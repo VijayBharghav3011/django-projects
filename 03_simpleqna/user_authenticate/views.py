@@ -124,7 +124,7 @@ class PasswordConfirmView(PasswordResetConfirmView):
                 'user': user,
             }
             send_password_update_notification(
-                subject='HMS Password Updated',
+                subject='QNA Password Updated',
                 to=user.email,
                 context=context,
             )
