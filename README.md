@@ -20,7 +20,6 @@ A simple web-based Question & Answer platform built with Django, where authentic
 - Show total upvotes per answer
 - Login required to interact
 - Basic CSRF protection
-- Cache control decorators to prevent stale data
 
 ---
 
